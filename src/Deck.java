@@ -14,7 +14,7 @@ public class Deck {
 	}
 
 	private void initializeDeck() {
-		int index = -1;
+		int index = 0;
 		for(SuitEnum suit : SuitEnum.values())
 			for(ValueEnum value : ValueEnum.values()) {
 				deck[index++] = new Card(suit, value);
@@ -37,7 +37,7 @@ public class Deck {
 	}
 
 	public Card draw() {
-		return deck[size--];
+		return deck[size-- - 1];
 	}
 
 	public int size() {
