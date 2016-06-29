@@ -1,10 +1,11 @@
 import java.util.Set;
 import java.util.HashSet;
+import HandEnum;
 
 // Poker hand evaluator
 // Currently works for hands of 5 cards only
 
-public class HandEvaluator {
+public class HandEvaluator{
 	public static Card[] hand;
 	public static HandEnum evaluate(Card[] hand) {
 		// Copy hand to field
@@ -61,17 +62,68 @@ public class HandEvaluator {
 		Set<ValueEnum> s = new HashSet<ValueEnum>();
 		for(int i = 0; i < hand.length; i++)
 			s.add(hand[i].getValue());
-		return s.size() == 2 && !isFull();
+		return s.size() == 2 && 
+				(hand[0] == hand[1] ^
+				 hand[3] == hand[4]);
 	}
 
+	// Hacky check, only works with hand of size 5.
 	private static boolean isFull() {
 		Set<ValueEnum> s = new HashSet<ValueEnum>();
 		for(int i = 0; i < hand.length; i++)
 			s.add(hand[i].getValue());
 
 		// Check if contains 2 of one value in set.
-		boolean isFull = false;
+		return s.size() == 2 && 
+				(hand[0] == hand[1] &&
+				 hand[3] == hand[4]);
 		
+	}
+
+	private static boolean isFlush() {
+		Set<SuitEnum> s = new HashSet<SuitEnum>();
+		for(int i = 0; i < hand.length; i++)
+			s.add(hand[i].getSuit());
+		return s.size() == 1;
+	}
+
+	private static boolean isStraight() {
+		for(int i = 0; i < hand.length - 1; i++) {
+			int firstNum = hand[i].getValue().ordinal();
+			int secondNum = hand[i + 1].getValue().ordinal();
+			if(firstNum + 1 != secondNum ||
+			   firstNum - 13 != secondNum)
+				return false;
+		}
+		return true;
+	}
+
+	private static boolean isThree() {
+		for(int i = 0; i < hand.length - 2; i++) {
+			if(hand[i].getValue() ==
+			   hand[i + 1].getValue() ==
+			   hand[i + 2].getValue())
+				return true;
+		}
+		return false;
+	}
+
+	private static boolean isTwoPair() {
+		Set<ValueEnum> s = new HashSet<ValueEnum>();
+		for(int i = 0; i < hand.length; i++)
+			s.add(hand[i].getValue());
+
+		// Check if contains 3 of one value in set.
+		return s.size() == 3 && !isThree();
+	}
+
+	private static boolean isPair() {
+		Set<ValueEnum> s = new HashSet<ValueEnum>();
+		for(int i = 0; i < hand.length; i++)
+			s.add(hand[i].getValue());
+
+		// Check if contains 3 of one value in set.
+		return s.size() == 4;
 	}
 
 
