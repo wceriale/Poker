@@ -6,4 +6,4 @@ Implemented following classes:
 ##How to run
 clone the repo and download it.
 to run from root
-java -cp bin VideoPokerClient
+	java -cp bin VideoPokerClient
