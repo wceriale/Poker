@@ -8,6 +8,7 @@ public class Deck {
 
 	public Deck() {
 		r = new Random();
+		size = NUM_CARDS;
 		deck = new Card[NUM_CARDS];
 		initializeDeck();
 	}
@@ -22,7 +23,17 @@ public class Deck {
 
 
 	public void shuffle() {
-		//Fisher Yates Algorithm
+		// Fisher Yates Algorithm
+		for(int i = deck.length - 1; i > 0; i--) {
+			int j = r.nextInt(i) + 1;
+			swap(i, j);
+		}
+	}
+
+	private void swap(int i, int j) {
+		Card temp = deck[i];
+		deck[i] = deck[j];
+		deck[j] = temp;
 	}
 
 	public Card draw() {
