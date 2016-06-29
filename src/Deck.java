@@ -24,7 +24,7 @@ public class Deck {
 
 	public void shuffle() {
 		// Fisher Yates Algorithm
-		for(int i = deck.length - 1; i > 0; i--) {
+		for(int i = size - 1; i > 0; i--) {
 			int j = r.nextInt(i) + 1;
 			swap(i, j);
 		}
