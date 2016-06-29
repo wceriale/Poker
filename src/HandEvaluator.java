@@ -1,56 +1,55 @@
 import java.util.Set;
 import java.util.HashSet;
-import HandEnum;
 
 // Poker hand evaluator
 // Currently works for hands of 5 cards only
 
 public class HandEvaluator{
 	public static Card[] hand;
-	public static HandEnum evaluate(Card[] hand) {
+	public static HandEnum evaluate(Card[] curr) {
+		hand = new Card[curr.length];
 		// Copy hand to field
-		copy(hand);
+		copy(curr);
 
 		// Sort the copied hand (field) - Makes checking 
 		// hands easier.
 		sort();
 
-		if(isRoyal())				return ROYAL_FLUSH;
-		else if(isStraightFlush()) 	return STRAIGHT_FLUSH;
-		else if(isFour())   		return FOUR_OF_A_KIND;
-		else if(isFull())   		return FULL_HOUSE;
-		else if(isFlush())  		return FLUSH;
-		else if(isStraight())		return STRAIGHT;
-		else if(isThree())			return THREE_OF_A_KIND;
-		else if(isTwoPair())		return TWO_PAIR;
-		else if(isPair())			return PAIR;
-		else 						return HIGH_CARD;
+		if(isRoyal())				return HandEnum.ROYAL_FLUSH;
+		else if(isStraightFlush()) 	return HandEnum.STRAIGHT_FLUSH;
+		else if(isFour())   		return HandEnum.FOUR_OF_A_KIND;
+		else if(isFull())   		return HandEnum.FULL_HOUSE;
+		else if(isFlush())  		return HandEnum.FLUSH;
+		else if(isStraight())		return HandEnum.STRAIGHT;
+		else if(isThree())			return HandEnum.THREE_OF_A_KIND;
+		else if(isTwoPair())		return HandEnum.TWO_PAIR;
+		else if(isPair())			return HandEnum.PAIR;
+		else 						return HandEnum.HIGH_CARD;
 	}
 
-	private static void copy(Card[] hand) {
-		for(int i = 0; i < hand.length; i++)
-			this.hand[i] = hand[i];
+	private static void copy(Card[] curr) {
+		for(int i = 0; i < curr.length; i++)
+			hand[i] = curr[i];
 	}
 	
 	// Sorting Alg using Insertion Sort based on Value
 	private static void sort() {
 		Card[] result = new Card[hand.length];
-		result[0] = hand[0];
 		for(int i = 1; i < hand.length; i++) {
-			Card card = hand[i];
-			int j = 0;
-			while(j < i && card.getValue.ordinal() < result[j].ordinal())
-				j++;
-			for(int k = j; k < i; k++)
-				result[k] = result[k - 1];
-			result[j] = card;
+			Card c = hand[i];
+			int j = i - 1;
+			while(j >= 0 && hand[j].getValue().ordinal() > 
+							c.getValue().ordinal()) {
+				hand[j + 1] = hand[j];
+				j--;
+			}
+			hand[j + 1] = c;
 		}
-		hand = result;
 	}
 
 	private static boolean isRoyal() {
 		return isStraightFlush() && 
-			hand[hand.length - 1].card.getValue() == ACE;
+			hand[hand.length - 1].getValue() == ValueEnum.ACE;
 	}
 
 	private static boolean isStraightFlush() {
@@ -91,7 +90,7 @@ public class HandEvaluator{
 		for(int i = 0; i < hand.length - 1; i++) {
 			int firstNum = hand[i].getValue().ordinal();
 			int secondNum = hand[i + 1].getValue().ordinal();
-			if(firstNum + 1 != secondNum ||
+			if(firstNum + 1 != secondNum &&
 			   firstNum - 13 != secondNum)
 				return false;
 		}
@@ -101,7 +100,8 @@ public class HandEvaluator{
 	private static boolean isThree() {
 		for(int i = 0; i < hand.length - 2; i++) {
 			if(hand[i].getValue() ==
-			   hand[i + 1].getValue() ==
+			   hand[i + 1].getValue() &&
+			   hand[i].getValue()   ==
 			   hand[i + 2].getValue())
 				return true;
 		}

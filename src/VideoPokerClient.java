@@ -20,10 +20,14 @@ public class VideoPokerClient {
 		printHand(hand);
 		System.out.println(deck.toString());
 		System.out.println("Enter numbers seperated by spaces to indicate which cards to keep");
+		System.out.println(HandEvaluator.evaluate(hand));
+		System.out.println();
 		String userLine = input.nextLine();
 		processInput(userLine, hand, deck);
 		printHand(hand);
 		System.out.println(deck.toString());
+		System.out.println();
+		System.out.println(HandEvaluator.evaluate(hand));
 
 	}
 
