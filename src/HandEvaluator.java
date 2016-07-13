@@ -4,6 +4,10 @@ import java.util.HashSet;
 // Poker hand evaluator
 // Currently works for hands of 5 cards only
 
+// Takes arrray of cards to represent the hand, makes a copy of it,
+// sorts it, then checks for the highest thing possible, and makes its
+// way down the different hand levels.
+
 public class HandEvaluator{
 	public static Card[] hand;
 	public static HandEnum evaluate(Card[] curr) {
